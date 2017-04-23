@@ -1,8 +1,12 @@
 logging:
   level:
     robert: DEBUG
-    org.springframework: WARN
-    org.hibernate: WARN
+
+spring:
+  datasource:
+      tomcat:
+        max-active: 12
+        max-wait: 5000
 
 robert:
   user:
