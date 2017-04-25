@@ -6,23 +6,31 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 @Configuration
 @EnableWebSecurity
+@CrossOrigin(origins = "*")
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Value("${robert.user.password}")
     private String userPassword;
 
+    @Value("${robert.user.username}")
+    private String username;
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
         auth.inMemoryAuthentication()
-                .withUser("user")
+                .withUser(username)
                 .password(userPassword)
                 .roles("USER");
 
-        System.out.println("user's password:\t" + userPassword);
+        System.out.println("\nuser credentials:\t" + username + "/" + userPassword + "\n");
+        userPassword = null;
+        username = null;
     }
 
     @Override
@@ -31,6 +39,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest()
                 .authenticated()
                 .and()
+                .formLogin()
+                .and()
                 .httpBasic();
+
+        http.csrf()
+                .disable()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.NEVER)
+
+                .and()
+                .headers()
+                .cacheControl();
     }
 }

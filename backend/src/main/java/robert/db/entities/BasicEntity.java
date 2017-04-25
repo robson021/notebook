@@ -7,6 +7,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @MappedSuperclass
 public abstract class BasicEntity {
 
@@ -16,6 +18,7 @@ public abstract class BasicEntity {
     private Long id;
 
     @Column
+    @JsonIgnore
     private String uuid = UUID.randomUUID()
             .toString();
 

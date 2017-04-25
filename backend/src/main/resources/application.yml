@@ -3,6 +3,9 @@ logging:
     robert: DEBUG
 
 spring:
+  profiles:
+    active: dev
+
   datasource:
       tomcat:
         max-active: 12
@@ -10,4 +13,5 @@ spring:
 
 robert:
   user:
-    password: password
+    password: Passwd.123
+    username: test@t.pl

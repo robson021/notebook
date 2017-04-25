@@ -1,5 +1,7 @@
 package robert.web.controllers;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +17,8 @@ import robert.db.repo.NoteRepository;
 @RequestMapping("/notes")
 public class NoteController {
 
+    private final Logger log = LoggerFactory.getLogger(NoteController.class);
+
     private final NoteRepository noteRepository;
 
     public NoteController(NoteRepository noteRepository) {
@@ -23,7 +27,11 @@ public class NoteController {
 
     @GetMapping("/all")
     public Iterable<Note> getAllNotes() {
-        return noteRepository.findAll();
+        Iterable<Note> notes = noteRepository.findAll();
+        if ( log.isDebugEnabled() )
+            log.debug("Found: {} - notes", notes);
+
+        return notes;
     }
 
     @PostMapping("/add-new")
